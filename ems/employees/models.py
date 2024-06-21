@@ -49,7 +49,7 @@ class CurrentOrganizationDetail(models.Model):
 
 
 class Employee(models.Model):
-    employee_id = models.IntegerField(null=True,blank=True)
+    employee_id = models.IntegerField(null=True,blank=True,unique=True)
     personalDetails = models.ForeignKey(PersonalDetail,on_delete=models.CASCADE)
     bankDetails = models.ForeignKey(BankDetail,on_delete=models.CASCADE)
     professionalDetails = models.ForeignKey(ProfessionalDetail,on_delete=models.CASCADE)
@@ -59,6 +59,7 @@ class Employee(models.Model):
 
 
 class EducationDetails(models.Model):
+    education_id = models.IntegerField(null=True,blank=True,unique=True)
     employee = models.ForeignKey(Employee,on_delete=models.CASCADE)
     educationName = models.CharField(max_length=20)
     result = models.CharField(max_length=20)
@@ -69,6 +70,7 @@ class EducationDetails(models.Model):
 
 
 class ExperienceDetails(models.Model):
+    experience_id = models.IntegerField(null=True,blank=True,unique=True)
     employee = models.ForeignKey(Employee,on_delete=models.CASCADE)
     companyName = models.CharField(max_length=20)
     position = models.CharField(max_length=20)

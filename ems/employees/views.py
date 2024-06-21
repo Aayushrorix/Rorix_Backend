@@ -68,6 +68,7 @@ class AddEmployee(APIView):
 
         for edu in educationDetails:
             EducationDetails.objects.create(
+                education_id = edu.get("education_id"),
                 employee = employee,
                 educationName = edu.get("educationName"),
                 result = edu.get("universityName"),
@@ -77,6 +78,7 @@ class AddEmployee(APIView):
         
         for exp in experienceDetails:
             ExperienceDetails.objects.create(
+                experience_id = exp.get("experience_id"),
                 employee = employee,
                 companyName = exp.get("companyName"),
                 position = exp.get("position"),
@@ -100,6 +102,7 @@ class GetEmployees(APIView):
             edus = EducationDetails.objects.filter(employee=emp)
             for edu in edus:
                 edu_dict = {
+                    "education_id": edu.education_id,
                     "educationName": edu.educationName,
                     "universityName": edu.universityName,
                     "result": edu.result,
@@ -111,6 +114,7 @@ class GetEmployees(APIView):
             exps = ExperienceDetails.objects.filter(employee=emp)
             for exp in exps:
                 exp_dict = {
+                    "experience_id": exp.experience_id,
                     "companyName": exp.companyName,
                     "position": exp.position,
                     "totalYear": exp.totalYear,
@@ -156,3 +160,47 @@ class GetEmployees(APIView):
             all_employees.append(emp_dict)
 
         return Response({"employees":all_employees})
+
+
+class DeteteEmployee(APIView):
+    def delete(self,request,id):
+        emp_id = int(id)
+
+        employee = Employee.objects.get(employee_id=emp_id)
+        employee.personalDetails.delete()
+        employee.bankDetails.delete()
+        employee.professionalDetails.delete()
+        employee.currentOrganizationDetails.delete()
+
+        edus = EducationDetails.objects.filter(employee=employee)
+        for edu in edus:
+            edu.delete()
+        exps = ExperienceDetails.objects.filter(employee=employee)
+        for exp in exps:
+            exp.delete()
+        
+        employee.delete()
+
+        return Response({"deleted_employee_id":emp_id, "message":"Deleted Successfully"})
+
+
+class EditEmployee(APIView):
+    def put(self,request):
+
+        data = request.data
+
+        personalDetail = data.get("personalDetail")
+        bankDetail = data.get("bankDetail")
+        professionalDetail = data.get("professionalDetail")
+        currentOrganizationDetail = data.get("currentOrganizationDetail")
+        educationDetails = data.get("educationDetails")
+        experienceDetails = data.get("experienceDetails")
+
+        employee = Employee.objects.get(employee_id=data.get("id"))
+        personalDetail_obj = employee.personalDetails
+        bankDetail_obj = employee.bankDetails
+        professionalDetail_obj = employee.professionalDetails
+        currentOrganizationDetail_obj = employee.currentOrganizationDetails
+
+        edu_obs = EducationDetails.objects.filter(employee=employee)
+        exp_objs = ExperienceDetails.objects.filter(employee=employee)
