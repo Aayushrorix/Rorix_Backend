@@ -188,6 +188,7 @@ class EditEmployee(APIView):
     def put(self,request):
 
         data = request.data
+        print("\n\n\n data ---> ",data)
 
         personalDetail = data.get("personalDetail")
         bankDetail = data.get("bankDetail")
@@ -202,5 +203,63 @@ class EditEmployee(APIView):
         professionalDetail_obj = employee.professionalDetails
         currentOrganizationDetail_obj = employee.currentOrganizationDetails
 
-        edu_obs = EducationDetails.objects.filter(employee=employee)
+        edu_objs = EducationDetails.objects.filter(employee=employee)
         exp_objs = ExperienceDetails.objects.filter(employee=employee)
+
+        for edu in edu_objs:
+            edu.delete()
+        for exp in exp_objs:
+            exp.delete()
+        
+        personalDetail_obj.firstName = personalDetail.get("firstName")
+        personalDetail_obj.middleName =  personalDetail.get("middleName")
+        personalDetail_obj.lastName =  personalDetail.get("lastName")
+        personalDetail_obj.email =  personalDetail.get("email")
+        personalDetail_obj.mobileNumber =  personalDetail.get("mobileNumber")
+        # dob = personalDetail.get("dob"),
+        personalDetail_obj.presentAddresss =  personalDetail.get("presentAddress")
+        personalDetail_obj.permenentAddress =  personalDetail.get("permanentAddress")
+        personalDetail_obj.copyAddress =  personalDetail.get("copyAddress")
+        personalDetail_obj.save()
+
+        bankDetail_obj.bankName = bankDetail.get("bankName")
+        bankDetail_obj.accountName = bankDetail.get("accountName")
+        bankDetail_obj.accountNumber = bankDetail.get("accountNumber")
+        bankDetail_obj.ifscCode = bankDetail.get("ifscCode")
+        bankDetail_obj.aadharNumber = bankDetail.get("aadhaarNumber")
+        bankDetail_obj.panNumber = bankDetail.get("panNumber")
+        bankDetail_obj.save()
+
+        professionalDetail_obj.designation = professionalDetail.get("designation")
+        professionalDetail_obj.department = professionalDetail.get("department")
+        professionalDetail_obj.months = professionalDetail.get("years")
+        professionalDetail_obj.years = professionalDetail.get("months")
+        professionalDetail_obj.currentLocation = professionalDetail.get("currentLocation")
+        professionalDetail_obj.save()
+
+        currentOrganizationDetail_obj.currentCTC = currentOrganizationDetail.get("currentCTC")
+        currentOrganizationDetail_obj.save()
+
+        for edu in educationDetails:
+            EducationDetails.objects.create(
+                education_id = edu.get("education_id"),
+                employee = employee,
+                educationName = edu.get("educationName"),
+                result = edu.get("universityName"),
+                universityName = edu.get("result"),
+                yearOfPassing = edu.get("yearOfPassing"),
+            ).save()
+        
+        for exp in experienceDetails:
+            ExperienceDetails.objects.create(
+                experience_id = exp.get("experience_id"),
+                employee = employee,
+                companyName = exp.get("companyName"),
+                position = exp.get("position"),
+                totalYear = exp.get("totalYear"),
+                lastCTC = exp.get("lastCTC"),
+            ).save()
+        
+        employee.save()
+        
+        return Response(data)
