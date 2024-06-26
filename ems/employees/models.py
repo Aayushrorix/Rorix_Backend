@@ -49,7 +49,7 @@ class CurrentOrganizationDetail(models.Model):
 
 
 class Employee(models.Model):
-    employee_id = models.IntegerField(null=True,blank=True,unique=True)
+    employee_id = models.CharField(max_length=50,unique=True)
     personalDetails = models.ForeignKey(PersonalDetail,on_delete=models.CASCADE)
     bankDetails = models.ForeignKey(BankDetail,on_delete=models.CASCADE)
     professionalDetails = models.ForeignKey(ProfessionalDetail,on_delete=models.CASCADE)

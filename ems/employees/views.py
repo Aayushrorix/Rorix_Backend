@@ -164,7 +164,7 @@ class GetEmployees(APIView):
 
 class DeteteEmployee(APIView):
     def delete(self,request,id):
-        emp_id = int(id)
+        emp_id = id
 
         employee = Employee.objects.get(employee_id=emp_id)
         employee.personalDetails.delete()
