@@ -197,14 +197,21 @@ class EditEmployee(APIView):
         educationDetails = data.get("educationDetails")
         experienceDetails = data.get("experienceDetails")
 
+        
+
         employee = Employee.objects.get(employee_id=data.get("id"))
+        print("Done -> .................................")
         personalDetail_obj = employee.personalDetails
         bankDetail_obj = employee.bankDetails
         professionalDetail_obj = employee.professionalDetails
         currentOrganizationDetail_obj = employee.currentOrganizationDetails
 
+        
+
         edu_objs = EducationDetails.objects.filter(employee=employee)
         exp_objs = ExperienceDetails.objects.filter(employee=employee)
+
+        
 
         for edu in edu_objs:
             edu.delete()
@@ -239,6 +246,8 @@ class EditEmployee(APIView):
 
         currentOrganizationDetail_obj.currentCTC = currentOrganizationDetail.get("currentCTC")
         currentOrganizationDetail_obj.save()
+
+        
 
         for edu in educationDetails:
             EducationDetails.objects.create(

@@ -142,3 +142,4 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Add your frontend URL here
     "http://192.168.1.27:5173"
 ]
+
