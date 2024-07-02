@@ -84,16 +84,28 @@ WSGI_APPLICATION = 'ems.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+# DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql',
+#             'NAME': 'EMS',
+#             'USER': 'postgres',
+#             'PASSWORD':'admin',
+#             'HOST':'localhost',
+#             'PORT':'5432'
+#             }
+#         }
+
 DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'EMS',
-            'USER': 'postgres',
-            'PASSWORD':'admin',
-            'HOST':'localhost',
-            'PORT':'5432'
-            }
-        }
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'sql12717436',
+        'USER': 'sql12717436',
+        'PASSWORD':'kt59mR1PDJ',
+        'HOST': 'sql12.freesqldatabase.com',
+        'PORT': '3306',
+    }
+}
 
 
 # Password validation
@@ -143,3 +155,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://192.168.1.27:5173"
 ]
 
+STATICFILES_DIRS = os.path.join(BASE_DIR,'static'),
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
+MEDIA_URLS = '/media'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
