@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from datetime import datetime
 
 # Create your views here.
 
@@ -24,7 +25,7 @@ class AddEmployee(APIView):
             lastName =  personalDetail.get("lastName"),
             email =  personalDetail.get("email"),
             mobileNumber =  personalDetail.get("mobileNumber"),
-            # dob = personalDetail.get("dob"),
+            dob = datetime.strptime(personalDetail.get("dob"), "%Y-%m-%d").date(),
             presentAddresss =  personalDetail.get("presentAddress"),
             permenentAddress =  personalDetail.get("permanentAddress"),
             copyAddress =  personalDetail.get("copyAddress"),
@@ -47,12 +48,13 @@ class AddEmployee(APIView):
             months = professionalDetail.get("years"),
             years = professionalDetail.get("months"),
             currentLocation = professionalDetail.get("currentLocation"),
+            skills = str(professionalDetail.get("skills")),
         )
         professional.save()
 
         currentOrganization = CurrentOrganizationDetail.objects.create(
-            # joiningDate = currentOrganizationDetail.get("joiningDate"),
-            # appraisalDate = currentOrganizationDetail.get("appraisalDate"),
+            joiningDate = datetime.strptime(currentOrganizationDetail.get("joiningDate"), "%Y-%m-%d").date(),
+            appraisalDate = datetime.strptime(currentOrganizationDetail.get("appraisalDate"), "%Y-%m-%d").date(),
             currentCTC = currentOrganizationDetail.get("currentCTC"),
         )
         currentOrganization.save()
@@ -98,6 +100,8 @@ class GetEmployees(APIView):
         employees = Employee.objects.all()
 
         for emp in employees:
+
+            # print("\n\n\n===> ",emp.personalDetails.dob)
             edu_list = []
             edus = EducationDetails.objects.filter(employee=emp)
             for edu in edus:
@@ -130,7 +134,7 @@ class GetEmployees(APIView):
                     "lastName": emp.personalDetails.lastName,
                     "email":emp.personalDetails.email,
                     "mobileNumber":emp.personalDetails.mobileNumber,
-                    # "dob": "2000-11-10T18:30:00.000Z",
+                    "dob": emp.personalDetails.dob.strftime('%Y-%m-%d') if emp.personalDetails.dob else '',
                     "presentAddress": emp.personalDetails.presentAddresss,
                     "permanentAddress": emp.personalDetails.permenentAddress,
                     "copyAddress": emp.personalDetails.copyAddress,
@@ -151,9 +155,12 @@ class GetEmployees(APIView):
                     "years": emp.professionalDetails.years,
                     "months": emp.professionalDetails.months,
                     "currentLocation": emp.professionalDetails.currentLocation,
+                    "skills" :[string.strip("' ").strip('"') for string in list(map( str,emp.professionalDetails.skills[1:-1].split(',')))],
                 },
                 "currentOrganizationDetail":{
                     "currentCTC": emp.currentOrganizationDetails.currentCTC,
+                    "joiningDate": emp.currentOrganizationDetails.joiningDate.strftime('%Y-%m-%d') if emp.currentOrganizationDetails.joiningDate else '',
+                    "appraisalDate": emp.currentOrganizationDetails.appraisalDate.strftime('%Y-%m-%d') if emp.currentOrganizationDetails.appraisalDate else '',
                 }
             }
 
@@ -197,33 +204,29 @@ class EditEmployee(APIView):
         educationDetails = data.get("educationDetails")
         experienceDetails = data.get("experienceDetails")
 
-        
+        dob = datetime.strptime(personalDetail.get("dob"), '%Y-%m-%d').date()
 
         employee = Employee.objects.get(employee_id=data.get("id"))
-        print("Done -> .................................")
         personalDetail_obj = employee.personalDetails
         bankDetail_obj = employee.bankDetails
         professionalDetail_obj = employee.professionalDetails
         currentOrganizationDetail_obj = employee.currentOrganizationDetails
 
-        
-
         edu_objs = EducationDetails.objects.filter(employee=employee)
         exp_objs = ExperienceDetails.objects.filter(employee=employee)
-
-        
 
         for edu in edu_objs:
             edu.delete()
         for exp in exp_objs:
             exp.delete()
         
+        # print("\n\n\n\n-----> ",type(personalDetail.get("dob")))
         personalDetail_obj.firstName = personalDetail.get("firstName")
         personalDetail_obj.middleName =  personalDetail.get("middleName")
         personalDetail_obj.lastName =  personalDetail.get("lastName")
         personalDetail_obj.email =  personalDetail.get("email")
         personalDetail_obj.mobileNumber =  personalDetail.get("mobileNumber")
-        # dob = personalDetail.get("dob"),
+        personalDetail_obj.dob = dob
         personalDetail_obj.presentAddresss =  personalDetail.get("presentAddress")
         personalDetail_obj.permenentAddress =  personalDetail.get("permanentAddress")
         personalDetail_obj.copyAddress =  personalDetail.get("copyAddress")
@@ -242,12 +245,13 @@ class EditEmployee(APIView):
         professionalDetail_obj.months = professionalDetail.get("years")
         professionalDetail_obj.years = professionalDetail.get("months")
         professionalDetail_obj.currentLocation = professionalDetail.get("currentLocation")
+        professionalDetail_obj.skills = str(professionalDetail.get("skills"))
         professionalDetail_obj.save()
 
         currentOrganizationDetail_obj.currentCTC = currentOrganizationDetail.get("currentCTC")
+        currentOrganizationDetail_obj.joiningDate = datetime.strptime(currentOrganizationDetail.get("joiningDate"), "%Y-%m-%d").date()
+        currentOrganizationDetail_obj.appraisalDate = datetime.strptime(currentOrganizationDetail.get("appraisalDate"), "%Y-%m-%d").date()
         currentOrganizationDetail_obj.save()
-
-        
 
         for edu in educationDetails:
             EducationDetails.objects.create(

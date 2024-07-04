@@ -94,6 +94,16 @@ DATABASES = {
             'PORT':'5432'
             }
         }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': 'sql12717436',
+#         'USER': 'sql12717436',
+#         'PASSWORD':'kt59mR1PDJ',
+#         'HOST': 'sql12.freesqldatabase.com',
+#         'PORT': '3306',
+#     }
+# }
 
 
 # Password validation

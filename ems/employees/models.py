@@ -2,11 +2,11 @@ from django.db import models
 
 # Create your models here.
 class PersonalDetail(models.Model):
-    firstName = models.CharField(max_length=20)
-    middleName = models.CharField(max_length=20)
-    lastName = models.CharField(max_length=20)
+    firstName = models.CharField(max_length=50)
+    middleName = models.CharField(max_length=50)
+    lastName = models.CharField(max_length=50)
     email = models.EmailField()
-    mobileNumber = models.CharField(max_length=20) 
+    mobileNumber = models.CharField(max_length=50) 
     dob = models.DateField(null=True,blank=True)
     # image = models.JSONField()
     presentAddresss = models.CharField(max_length=50)
@@ -18,23 +18,23 @@ class PersonalDetail(models.Model):
 
 
 class BankDetail(models.Model):
-    bankName = models.CharField(max_length=20)
-    accountName = models.CharField(max_length=20)
-    accountNumber = models.CharField(max_length=20)
-    ifscCode = models.CharField(max_length=20)
-    aadharNumber = models.CharField(max_length=20)
-    panNumber = models.CharField(max_length=20)
+    bankName = models.CharField(max_length=50)
+    accountName = models.CharField(max_length=50)
+    accountNumber = models.CharField(max_length=50)
+    ifscCode = models.CharField(max_length=50)
+    aadharNumber = models.CharField(max_length=50)
+    panNumber = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 
 class ProfessionalDetail(models.Model):
-    designation = models.CharField(max_length=20)
-    department = models.CharField(max_length=20)
-    months = models.CharField(max_length=20)
-    years = models.CharField(max_length=20)
+    designation = models.CharField(max_length=50)
+    department = models.CharField(max_length=50)
+    months = models.CharField(max_length=50)
+    years = models.CharField(max_length=50)
     currentLocation = models.CharField(max_length=50)
-    # skills = models.ExpressionList
+    skills = models.CharField(max_length=100,default="")
     # resumeFile = models.JSONField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -43,7 +43,7 @@ class ProfessionalDetail(models.Model):
 class CurrentOrganizationDetail(models.Model):
     joiningDate = models.DateField(null=True,blank=True)
     appraisalDate = models.DateField(null=True,blank=True)
-    currentCTC = models.CharField(max_length=20)
+    currentCTC = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -61,10 +61,10 @@ class Employee(models.Model):
 class EducationDetails(models.Model):
     education_id = models.IntegerField(null=True,blank=True,unique=True)
     employee = models.ForeignKey(Employee,on_delete=models.CASCADE)
-    educationName = models.CharField(max_length=20)
-    result = models.CharField(max_length=20)
-    universityName = models.CharField(max_length=20)
-    yearOfPassing = models.CharField(max_length=20)
+    educationName = models.CharField(max_length=50)
+    result = models.CharField(max_length=50)
+    universityName = models.CharField(max_length=50)
+    yearOfPassing = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -72,9 +72,9 @@ class EducationDetails(models.Model):
 class ExperienceDetails(models.Model):
     experience_id = models.IntegerField(null=True,blank=True,unique=True)
     employee = models.ForeignKey(Employee,on_delete=models.CASCADE)
-    companyName = models.CharField(max_length=20)
-    position = models.CharField(max_length=20)
-    totalYear = models.CharField(max_length=20)
-    lastCTC = models.CharField(max_length=20)
+    companyName = models.CharField(max_length=50)
+    position = models.CharField(max_length=50)
+    totalYear = models.CharField(max_length=50)
+    lastCTC = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
