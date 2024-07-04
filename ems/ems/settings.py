@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-0t^*61fqqx$kneqg_5v(fc7=x))tk4t4dsx^s=m8@pfj&t2(d+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["192.168.1.27",'localhost','127.0.0.1']
+ALLOWED_HOSTS = ["*","192.168.1.27",'localhost','127.0.0.1']
 
 
 # Application definition
@@ -84,6 +84,18 @@ WSGI_APPLICATION = 'ems.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+# DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql',
+#             'NAME': 'EMS',
+#             'USER': 'postgres',
+#             'PASSWORD':'admin',
+#             'HOST':'localhost',
+#             'PORT':'5432'
+#             }
+#         }
+
 DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -104,6 +116,7 @@ DATABASES = {
 #         'PORT': '3306',
 #     }
 # }
+
 
 
 # Password validation
@@ -153,3 +166,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://192.168.1.27:5173"
 ]
 
+STATICFILES_DIRS = os.path.join(BASE_DIR,'static'),
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
+MEDIA_URLS = '/media'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
